@@ -19,19 +19,19 @@
             <table class="table">
                 <tr>
                     <th>Date de reception:</th>
-                    <td><?php echo $message['messageDate'];?></td>
+                    <td><?php echo htmlentities($message['messageDate']);?></td>
                 </tr>
                 <tr>
                     <th>Expediteur:</th>
-                    <td><?php echo $message['sender'];?></td>
+                    <td><?php echo htmlentities($message['sender']);?></td>
                 </tr>
                 <tr>
                     <th>Sujet:</th>
-                    <td><?php echo $message['subject'];?></td>
+                    <td><?php echo htmlentities($message['subject']);?></td>
                 </tr>
                 <tr>
-                    <th>Message:</th>
-                    <td><?php echo $message['messageContent']?></td>
+                    <th>Message :</th>
+                    <td><?php echo htmlentities($message['messageContent'])?></td>
                 </tr>
             </table>
         </div>

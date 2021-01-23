@@ -21,9 +21,9 @@
 
     if(isset($_GET['username'])){
         $checkuser = $db->query("SELECT validity, role_id FROM account WHERE username=".'"'.$_GET['username'].'"')->fetch();
-        $user = $_GET['username'];
-        $validity = $checkuser['validity'];
-        $role = $checkuser['role_id'];
+        $user = htmlentities($_GET['username']);
+        $validity = htmlentities($checkuser['validity']);
+        $role = htmlentities($checkuser['role_id']);
     }
     include('header.php');
 ?>

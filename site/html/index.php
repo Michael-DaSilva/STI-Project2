@@ -40,9 +40,9 @@ unset($_SESSION['messageDeleted']) ?>
     <?php
     foreach($messages as $m){
         echo "<tr>";
-        echo "<td>".$m['messageDate']."</td>";
-        echo "<td>".$m['sender']."</td>";
-        echo "<td>".$m['subject']."</td>";
+        echo "<td>".htmlentities($m['messageDate'])."</td>";
+        echo "<td>".htmlentities($m['sender'])."</td>";
+        echo "<td>".htmlentities($m['subject'])."</td>";
         echo "<td>";
         echo '<div class="btn-group-vertical btn-group-sm btn-outline-dark pt-1">
                 <a href="details.php?id='.$m['id'].'" class="btn btn-secondary" role="button">Details</a>

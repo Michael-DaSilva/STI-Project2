@@ -62,7 +62,7 @@ unset($_SESSION['userAdded']); ?>
     <?php
     foreach($users as $u){
         echo "<tr>";
-        echo "<td>".$u['username']."</td>";
+        echo "<td>".htmlentities($u['username'])."</td>";
         echo "<td>";
         echo '<div class="btn-group-vertical btn-group-sm btn-outline-dark pt-1">
                 <a href="modifyUser.php?username='.$u['username'].'" class="btn btn-secondary" role="button">Modifier l'."'".'utilisateur</a>

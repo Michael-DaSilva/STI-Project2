@@ -6,9 +6,9 @@
     include("utils.php");
 ?>
 <h3>Username :</h3>
-<?php echo $_SESSION['username'];?>
+<?php echo htmlentities($_SESSION['username']);?>
 <h3>Role :</h3>
-<?php echo $_SESSION['role'];?>
+<?php echo htmlentities($_SESSION['role']);?>
 <br/><br/>
 <form method="post" action="changePass.php">
     Changer le mot de passe: <input type="password" name="password">

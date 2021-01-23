@@ -11,18 +11,18 @@
 
     if(isset($_POST['submitEmail'])){
         if(!empty($_POST['receiver'])){
-            $receiver = $_POST['receiver'];
+            $receiver = htmlentities($_POST['receiver']);
         } else {
             $receiver_err = "Destinataire requis !";
         }
 
         if(!empty($_POST['subject'])){
-            $subject = $_POST['subject'];
+            $subject = htmlentities($_POST['subject']);
         } else {
             $subject_err = "Sujet requis !";
         }
         if(!empty($_POST['content'])){
-            $content = $_POST['content'];
+            $content = htmlentities($_POST['content']);
         } else {
             $content_err = "Message vide !";
         }

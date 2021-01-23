@@ -13,7 +13,7 @@
         $checkuser = $db->query("SELECT * FROM account WHERE username=".'"'.$_POST['user'].'"')->fetch();
         if(!empty($_POST['user'])){
             if(!$checkuser){
-                $user = $_POST['user'];
+                $user = htmlentities($_POST['user']);
             } else {
                 $user_err = "Utilisateur déjà existant !";
             }
@@ -22,13 +22,13 @@
         }
 
         if(!empty($_POST['password'])){
-            $password = $_POST['password'];
+            $password = htmlentities($_POST['password']);
         } else {
             $password_err = "Mot de passe requis !";
         }
 
-        $validity = $_POST['validity'];
-        $role = $_POST['role'];
+        $validity = htmlentities($_POST['validity']);
+        $role = htmlentities($_POST['role']);
 
         if(empty($user_err) && empty($password_err)){
             $_SESSION['newUsername'] = $user;
