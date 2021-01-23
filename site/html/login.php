@@ -61,13 +61,14 @@ if($respKeys["success"]) {
 
                             header('location: index.php');
                         } else {
+                            //$user_err = "Compte désactivé !";
                             $user_err = "Compte désactivé !";
                         }
                     } else {
-                        $pass_err = "Mot de passe incorrect !";
+                        $pass_err = "Credentials invalide";
                     }
                 } else {
-                    $user_err = "Ce compte n'existe pas.";
+                    $user_err = "Credentials invalide";
                 }
             } catch (PDOException $e){
                 echo "Error : ".$e->getMessage();
