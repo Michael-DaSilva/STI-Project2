@@ -16,50 +16,68 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true){
 $user = $pass = $login = "";
 $user_err = $pass_err = "";
 
-if(isset($_POST['submitLogin'])){
-    if(!empty($_POST['username'])){
-        $user = $_POST['username'];
-    } else {
-        $user_err = "Nom d'utilisateur requis !";
-    }
+if(isset($_POST['g-recaptcha-response'])){
+    $Capresp=$_POST['g-recaptcha-response'];
+}
+else{
+    //header error
+}
 
-    if(!empty($_POST['password'])){
-        $pass = $_POST['password'];
-    } else {
-        $pass_err = "Mot de passe requis !";
-    }
+$secret = "6Ldi-zgaAAAAADRUICb2dcY22F-lglgSqKtx9Jp3";
 
-    if(empty($user_err) && empty($pass_err)){
-        try {
-            $result = $db->query("SELECT * FROM account WHERE username = ".'"'.$user.'"')->fetch();
-            $login_exist = !empty($result);
+$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secret) .  '&response=' . urlencode($Capresp);
+$resp = file_get_contents($url);
+$respKeys = json_decode($resp,true);
 
-            if($login_exist){
-                if($pass === $result['password']){
-                    if($result['validity'] == 1){
-                        $sql = $db->query("SELECT id FROM role WHERE name = 'Administrateur'")->fetch();
-                        $admin_id = $sql['id'];
+if($respKeys["success"]) {
+    if(isset($_POST['submitLogin'])){
+        if(!empty($_POST['username'])){
+            $user = $_POST['username'];
+        } else {
+            $user_err = "Nom d'utilisateur requis !";
+        }
 
-                        $_SESSION["loggedin"] = true;
-                        $_SESSION['username'] = $user;
-                        $_SESSION['isAdmin'] = $result['role_id'] == $admin_id ? true : false;
-                        $_SESSION['role'] = $_SESSION['isAdmin'] === true ? "Administrateur" : "Collaborateur";
+        if(!empty($_POST['password'])){
+            $pass = $_POST['password'];
+        } else {
+            $pass_err = "Mot de passe requis !";
+        }
 
-                        header('location: index.php');
+        if(empty($user_err) && empty($pass_err)){
+            try {
+                $result = $db->query("SELECT * FROM account WHERE username = ".'"'.$user.'"')->fetch();
+                $login_exist = !empty($result);
+
+                if($login_exist){
+                    if($pass === $result['password']){
+                        if($result['validity'] == 1){
+                            $sql = $db->query("SELECT id FROM role WHERE name = 'Administrateur'")->fetch();
+                            $admin_id = $sql['id'];
+
+                            $_SESSION["loggedin"] = true;
+                            $_SESSION['username'] = $user;
+                            $_SESSION['isAdmin'] = $result['role_id'] == $admin_id ? true : false;
+                            $_SESSION['role'] = $_SESSION['isAdmin'] === true ? "Administrateur" : "Collaborateur";
+
+                            header('location: index.php');
+                        } else {
+                            $user_err = "Compte désactivé !";
+                        }
                     } else {
-                        $user_err = "Compte désactivé !";
+                        $pass_err = "Mot de passe incorrect !";
                     }
                 } else {
-                    $pass_err = "Mot de passe incorrect !";
+                    $user_err = "Ce compte n'existe pas.";
                 }
-            } else {
-                $user_err = "Ce compte n'existe pas.";
+            } catch (PDOException $e){
+                echo "Error : ".$e->getMessage();
             }
-        } catch (PDOException $e){
-            echo "Error : ".$e->getMessage();
         }
     }
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,6 +86,7 @@ if(isset($_POST['submitLogin'])){
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>STI-mail</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/login.css">
@@ -88,8 +107,9 @@ if(isset($_POST['submitLogin'])){
         }
         ?>
     </div>
-    <div class="form-group">
+    <div class="form-group">    
         <input type="password" id="passwordID" name="password" class="form-control" placeholder="Mot de passe">
+        
         <?php
         if(!empty($pass_err)){
             echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -101,9 +121,13 @@ if(isset($_POST['submitLogin'])){
         }
         ?>
     </div>
+    <div class="g-recaptcha" data-sitekey="6Ldi-zgaAAAAAD8KcJWvq6H_2FLIPJNgJyfRMzod"></div>
     <button type="submit" class="btn btn-primary" formmethod="post" name="submitLogin">Login</button>
-</form>
+    </form>
+
     <script src="jquery/jquery.slim.min.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
+    
 </body>
+
 </html>
