@@ -55,7 +55,7 @@ else if(isset($_SESSION['userDeleted']) && $_SESSION['userDeleted'] === false)
                   </button>
                 </div>';
 unset($_SESSION['userDeleted']); ?>
-<?php if(isset($_SESSION['userAdded']) && $_SESSION['userDeleted'] === true)
+<?php if(isset($_SESSION['userAdded']) && $_SESSION['userAdded'] === true)
     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                   Nouvel Utilisateur ajouté !
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">

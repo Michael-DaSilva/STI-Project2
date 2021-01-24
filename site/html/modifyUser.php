@@ -6,6 +6,7 @@ Changement apporté:
 - Prepare statement contre les injections SQL
 - htmlentities contre les attaques XSS
 - accès restreint à l'admin
+- Getion des mots de passe forts (checkPass.php)
 -->
 <?php
     session_start();
@@ -18,23 +19,12 @@ Changement apporté:
     }
 
     $user = $password = $validity = $role = "";
+	$password_err = "";
 
     include("utils.php");
     include('checkPass.php');
 
-    if(isset($_POST['submitModifiedUser'])){
-        if(!empty($_POST['password'])){
-            $stmt = $db->prepare("UPDATE account SET password=? WHERE username=?");
-            if(!check_mdp_format($_POST['password'])) {
-                echo ("Erreur mot de passe trop faible<br/>");
-                echo ("<a href='profil.php'>retour</a>");
-                die();
-            }
-            $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-			$stmt->bindParam(1, $hash);
-			$stmt->bindParam(2, $_SESSION['user']);
-			$stmt->execute();
-        }
+    if(isset($_POST['submitModifiedUser'])){		
 		$stmt = $db->prepare("UPDATE account SET validity=? WHERE username=?");
 		$stmt->bindParam(1, $_POST['validity']);
 		$stmt->bindParam(2, $_SESSION['user']);
@@ -45,9 +35,25 @@ Changement apporté:
 		$stmt->bindParam(2, $_SESSION['user']);
 		$stmt->execute();
 		
+		if(!empty($_POST['password'])){
+			if(!check_mdp_format($_POST['password'])) {
+                $password_err = $password_err = "Erreur: mot de passe faible (8 caracters minimum, majuscules, minuscules et chiffres)!";
+            }
+			if(empty($password_err)){
+				$stmt = $db->prepare("UPDATE account SET password=? WHERE username=?");
+				$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+				$stmt->bindParam(1, $hash);
+				$stmt->bindParam(2, $_SESSION['user']);
+				$stmt->execute();	
+			}
+        }
+		
         unset($_SESSION['user']);
+		unset($_POST['password']);
         $_SESSION['userModified'] = true;
-        header("location: manageUser.php");
+		if(empty($password_err)){
+			header("location: manageUser.php");
+		}
     }
 
     if(isset($_GET['username'])){
@@ -72,6 +78,16 @@ Changement apporté:
             <label for="pass">Password:</label>
             <input type="password" class="form-control" id="pass" name="password" placeholder="Mot de passe">
         </div>
+		<?php
+		if(!empty($password_err)){
+			echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				  <strong>Erreur: </strong>'.$password_err.'
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>';
+		}
+		?>
         <div class="form-row">
             <div class="form-check form-check-inline">
                 <input type="radio" class="form-check-input" id="validN" name="validity" value="0" <?php if($validity == 0) echo "checked"?>>

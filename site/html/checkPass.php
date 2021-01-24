@@ -1,3 +1,9 @@
+<!--
+STI-Project2 2021
+Groupe: Michaël da Silva & Guillaume Schranz
+
+Création de document: gestion de la création de mot de passe fort
+-->
 <?php
 function check_mdp_format($mdp)
 {

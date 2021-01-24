@@ -15,11 +15,6 @@ if(!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] === false){
     header('location: index.php');
 }
 
-
-if(!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] === false){
-  header('location: index.php');
-}
-
 include('utils.php');
 
 try{
@@ -27,6 +22,7 @@ try{
 	$stmt->bindParam(1, $_GET['username']);
 	$stmt->execute();
 	$user = $stmt->fetch();
+	
     if(!empty($user['username'])){
 		$stmt = $db->prepare('DELETE FROM account WHERE username=?');
 		$stmt->bindParam(1, $_GET['username']);

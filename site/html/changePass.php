@@ -4,6 +4,7 @@ Groupe: Michaël da Silva & Guillaume Schranz
 
 Changement apporté:
 - Prepare statement contre les injections SQL
+- Getion des mots de passe forts (checkPass.php)
 -->
 <?php
 session_start();

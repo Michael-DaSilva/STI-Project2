@@ -42,7 +42,7 @@ Changement apporté:
                 </tr>
                 <tr>
                     <th>Message :</th>
-                    <td><?php echo htmlentities($message['messageContent'])?></td>
+                    <td><?php echo nl2br(htmlentities($message['messageContent']))?></td>
                 </tr>
             </table>
         </div>

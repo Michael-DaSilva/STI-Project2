@@ -79,6 +79,7 @@ Changement apporté:
             $content = "\n\n------------------------------------------------------------\nDe : ".$receiver."\nEnvoyé le : ".$messageDetails['messageDate']."\nSujet : ".$messageDetails['subject']."\nMessage :\n\n".$messageDetails['messageContent'];
         }
     }
+	include("header.php");
 ?>
 
 <form method="post" id="newEmail">
@@ -89,7 +90,13 @@ Changement apporté:
     <input type="submit" name="submitEmail" value="Envoyer">
 </form>
 <?php if(isset($_SESSION['emailSent']) && $_SESSION['emailSent'] === true){
-    echo "<h4>Message envoye!</h4>";
-    unset($_SESSION['emailSent']);
-} ?>
+    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+		  Message envoye!
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>';
+	unset($_SESSION['emailSent']);
+}?>
 <a href="index.php">Retour</a>
+<?php include("footer.php"); ?>

@@ -6,6 +6,7 @@ Changement apporté:
 - Prepare statement contre les injections SQL
 - htmlentities contre les attaques XSS
 - accès restreint à l'admin
+- Getion des mots de passe forts (checkPass.php)
 -->
 <?php
     session_start();
@@ -42,9 +43,7 @@ Changement apporté:
         if(!empty($_POST['password'])){
             $password = htmlentities($_POST['password']);
             if(!check_mdp_format($_POST['password'])) {
-                echo ("Erreur mot de passe trop faible<br/>");
-                echo ("<a href='profil.php'>retour</a>");
-                die();
+                $password_err = "Erreur: mot de passe faible (8 caracters minimum, majuscules, minuscules et chiffres)!";
             }
             $hash = password_hash($password, PASSWORD_DEFAULT);
         } else {
@@ -59,8 +58,8 @@ Changement apporté:
             $_SESSION['newUserpass'] = $hash;
             $_SESSION['newUservalidity'] = $validity;
             $_SESSION['newUserrole'] = $role;
+			header("location: addUser.php");
         }
-        header("location: addUser.php");
     }
     include('header.php');
 ?>
@@ -70,10 +69,30 @@ Changement apporté:
             <label for="username">Nom d'utilisateur:</label>
             <input type="text" class="form-control" id="username" name="user" placeholder="Nom d'utilisateur">
         </div>
+		<?php
+		if(!empty($user_err)){
+			echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				  <strong>Erreur: </strong>'.$user_err.'
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>';
+		}
+		?>
         <div class="form-row">
             <label for="pass">Password:</label>
             <input type="password" class="form-control" id="pass" name="password" placeholder="Mot de passe">
         </div>
+		<?php
+		if(!empty($password_err)){
+			echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				  <strong>Erreur: </strong>'.$password_err.'
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>';
+		}
+		?>
         <div class="form-row">
             <div class="form-check form-check-inline">
                 <input type="radio" class="form-check-input" id="validN" name="validity" value="0" checked>
