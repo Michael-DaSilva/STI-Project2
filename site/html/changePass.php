@@ -8,7 +8,10 @@ include('utils.php');
 
 try{
     if(isset($_POST['passChanged']) && !empty($_POST['password'])){
-        $db->query("UPDATE account SET password=".'"'.$_POST['password'].'"'." WHERE username=".'"'.$_SESSION['username'].'"');
+		$stmt = $db->prepare('UPDATE account SET password=? WHERE username=?');
+		$stmt->bindParam(1, $_POST['password']);
+		$stmt->bindParam(2, $_SESSION['username']);
+		$stmt->execute();
         $_SESSION['passEdited'] = true;
     }
 } catch(PDOException $e){

@@ -6,7 +6,10 @@
     include("utils.php");
 
     try {
-        $messages = $db->query("SELECT id, messageDate, sender, subject FROM messages WHERE receiver =".'"'.$_SESSION['username'].'" ORDER BY messageDate DESC, sender');
+		$stmt = $db->prepare('SELECT id, messageDate, sender, subject FROM messages WHERE receiver =? ORDER BY messageDate DESC, sender');
+		$stmt->bindParam(1, $_SESSION['username']);
+		$stmt->execute();
+        $messages = $stmt->fetchAll();
     } catch(PDOException $e){
         echo $e->getMessage();
     }

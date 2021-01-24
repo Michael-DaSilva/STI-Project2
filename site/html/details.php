@@ -7,7 +7,10 @@
     include("utils.php");
 
     try {
-        $message = $db->query("SELECT messageDate, sender, subject, messageContent FROM messages WHERE id=".$_GET['id'])->fetch();
+		$stmt = $db->prepare('SELECT messageDate, sender, subject, messageContent FROM messages WHERE id=?');
+		$stmt->bindParam(1, $_GET['id']);
+		$stmt->execute();
+        $message = $stmt->fetch();
     } catch(PDOException $e){
         echo $e->getMessage();
     }

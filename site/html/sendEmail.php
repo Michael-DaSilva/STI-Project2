@@ -7,7 +7,14 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
 include('utils.php');
 
 try{
-    $db->query("INSERT INTO messages (sender, receiver, subject, messageContent) VALUES ('".$_SESSION['username']."','".$_SESSION['newEmailreceiver']."',".'"'.$_SESSION['newEmailsubject'].'",'.'"'.$_SESSION['newEmailcontent'].'"'.")");
+	$stmt = $db->prepare("INSERT INTO messages (sender, receiver, subject, messageContent) VALUES (?,?,?,?)");
+	
+	$stmt->bindParam(1,$_SESSION['username']);
+	$stmt->bindParam(2,$_SESSION['newEmailreceiver']);
+	$stmt->bindParam(3,$_SESSION['newEmailsubject']);
+	$stmt->bindParam(4,$_SESSION['newEmailcontent']);
+	$stmt->execute();
+	
     $_SESSION['emailSent'] = true;
     unset($_SESSION['newEmailreceiver']);
     unset($_SESSION['newEmailsubject']);

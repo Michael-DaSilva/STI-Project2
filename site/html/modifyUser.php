@@ -10,17 +10,32 @@
 
     if(isset($_POST['submitModifiedUser'])){
         if(!empty($_POST['password'])){
-            $db->query("UPDATE account SET password=".'"'.$_POST['password'].'" WHERE username='.'"'.$_SESSION['user'].'"');
+			$stmt = $db->prepare("UPDATE account SET password=? WHERE username=?");
+			$stmt->bindParam(1, $_POST['password']);
+			$stmt->bindParam(2, $_SESSION['user']);
+			$stmt->execute();
         }
-        $db->query("UPDATE account SET validity=".$_POST['validity']." WHERE username=".'"'.$_SESSION['user'].'"');
-        $db->query("UPDATE account SET role_id=".$_POST['role']." WHERE username=".'"'.$_SESSION['user'].'"');
+		$stmt = $db->prepare("UPDATE account SET validity=? WHERE username=?");
+		$stmt->bindParam(1, $_POST['validity']);
+		$stmt->bindParam(2, $_SESSION['user']);
+		$stmt->execute();
+		
+        $stmt = $db->prepare("UPDATE account SET role_id=? WHERE username=?");
+		$stmt->bindParam(1, $_POST['role']);
+		$stmt->bindParam(2, $_SESSION['user']);
+		$stmt->execute();
+		
         unset($_SESSION['user']);
         $_SESSION['userModified'] = true;
         header("location: manageUser.php");
     }
 
     if(isset($_GET['username'])){
-        $checkuser = $db->query("SELECT validity, role_id FROM account WHERE username=".'"'.$_GET['username'].'"')->fetch();
+		$stmt = $db->prepare("SELECT validity, role_id FROM account WHERE username=?");
+		$stmt->bindParam(1, $_GET['username']);
+		$stmt->execute();
+		
+        $checkuser = $stmt->fetch();
         $user = htmlentities($_GET['username']);
         $validity = htmlentities($checkuser['validity']);
         $role = htmlentities($checkuser['role_id']);

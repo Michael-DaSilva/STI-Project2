@@ -7,9 +7,14 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
 include('utils.php');
 
 try{
-    $receiver = $db->query("SELECT receiver FROM messages WHERE id=".$_GET['id'])->fetch();
+	$stmt = $db->prepare('SELECT receiver FROM messages WHERE id=?');
+	$stmt->bindParam(1, $_GET['id']);
+	$stmt->execute();
+	$receiver = $stmt->fetch();
     if($receiver['receiver'] === $_SESSION['username']){
-        $db->query("DELETE FROM messages WHERE id=".$_GET['id']);
+		$stmt = $db->prepare('DELETE FROM messages WHERE id=?');
+		$stmt->bindParam(1, $_GET['id']);
+		$stmt->execute();
         $_SESSION['messageDeleted'] = true;
     } else {
         $_SESSION['messageDeleted'] = false;

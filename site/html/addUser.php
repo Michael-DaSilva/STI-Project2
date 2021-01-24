@@ -7,8 +7,14 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
 include('utils.php');
 
 try{
-    $db->query("INSERT INTO account (username, password, validity, role_id) VALUES ('".$_SESSION['newUsername']."','".$_SESSION['newUserpass']."',".$_SESSION['newUservalidity'].",".$_SESSION['newUserrole'].")");
-    $_SESSION['userAdded'] = true;
+	$stmt = $db->prepare('INSERT INTO account (username, password, validity, role_id) VALUES (?,?,?,?)');
+	$stmt->bindParam(1, $_SESSION['newUsername']);
+	$stmt->bindParam(2, $_SESSION['newUserpass']);
+	$stmt->bindParam(3, $_SESSION['newUservalidity']);
+	$stmt->bindParam(4, $_SESSION['newUserrole']);
+	$stmt->execute();
+    
+	$_SESSION['userAdded'] = true;
     unset($_SESSION['newUsername']);
     unset($_SESSION['newUserpass']);
     unset($_SESSION['newUservalidity']);

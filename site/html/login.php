@@ -45,7 +45,10 @@ if($respKeys["success"]) {
 
         if(empty($user_err) && empty($pass_err)){
             try {
-                $result = $db->query("SELECT * FROM account WHERE username = ".'"'.$user.'"')->fetch();
+				$stmt = $db->prepare('SELECT * FROM account WHERE username = ?');
+				$stmt->bindParam(1, $user);
+				$stmt->execute();
+                $result = $stmt->fetch();
                 $login_exist = !empty($result);
 
                 if($login_exist){

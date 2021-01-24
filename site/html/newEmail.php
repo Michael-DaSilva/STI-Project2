@@ -28,7 +28,10 @@
         }
 
         if(empty($receiver_err) && empty($subject_err) && empty($content_err)){
-            $checkreceiver = $db->query("SELECT * FROM account WHERE username=".'"'.$receiver.'"')->fetch();
+			$stmt = $db->prepare("SELECT * FROM account WHERE username=?");
+			$stmt->bindParam(1,$receiver);
+			$stmt->execute();
+            $checkreceiver = $stmt->fetch();
             $receiverexist = !empty($checkreceiver);
 
             if($receiverexist){
@@ -44,7 +47,10 @@
     }
 
     if(isset($_GET['id'])){
-        $messageDetails = $db->query("SELECT messageDate, sender, subject, receiver, messageContent FROM messages WHERE id=".$_GET['id'])->fetch();
+		$stmt = $db->prepare("SELECT messageDate, sender, subject, receiver, messageContent FROM messages WHERE id=?");
+		$stmt->bindParam(1,$_GET['id']);
+		$stmt->execute();
+        $messageDetails = $stmt->fetch();
         if($_SESSION['username'] === $messageDetails['receiver']){
             $receiver = $messageDetails['sender'];
             $subject = "RE: ".$messageDetails['subject'];

@@ -10,7 +10,11 @@
     include("utils.php");
 
     if(isset($_POST['submitNewUser'])){
-        $checkuser = $db->query("SELECT * FROM account WHERE username=".'"'.$_POST['user'].'"')->fetch();
+		$stmt = $db->prepare("SELECT * FROM account WHERE username=?");
+		$stmt->bindParam(1, $_POST['user']);
+		$stmt->execute();
+		$checkuser = $stmt->fetch();
+		
         if(!empty($_POST['user'])){
             if(!$checkuser){
                 $user = htmlentities($_POST['user']);
