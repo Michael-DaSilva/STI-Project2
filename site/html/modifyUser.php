@@ -3,6 +3,10 @@
     if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
         header('location: login.php');
     }
+    if(!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] === false){
+        header('location: index.php');
+    }
+
 
     $user = $password = $validity = $role = "";
 

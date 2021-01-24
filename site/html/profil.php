@@ -19,3 +19,5 @@
     unset($_SESSION['passEdited']);
 } ?>
 <a href="index.php">Retour aux messages</a>
+
+
