@@ -14,8 +14,9 @@
 
     if(isset($_POST['submitModifiedUser'])){
         if(!empty($_POST['password'])){
-			$stmt = $db->prepare("UPDATE account SET password=? WHERE username=?");
-			$stmt->bindParam(1, $_POST['password']);
+            $stmt = $db->prepare("UPDATE account SET password=? WHERE username=?");
+            $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+			$stmt->bindParam(1, $hash);
 			$stmt->bindParam(2, $_SESSION['user']);
 			$stmt->execute();
         }

@@ -16,7 +16,8 @@ try{
         }
 
 		$stmt = $db->prepare('UPDATE account SET password=? WHERE username=?');
-		$stmt->bindParam(1, $_POST['password']);
+		$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+		$stmt->bindParam(1, $hash);
 		$stmt->bindParam(2, $_SESSION['username']);
 		$stmt->execute();
         $_SESSION['passEdited'] = true;

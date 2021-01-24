@@ -30,6 +30,7 @@
 
         if(!empty($_POST['password'])){
             $password = htmlentities($_POST['password']);
+            $hash = password_hash($password, PASSWORD_DEFAULT);
         } else {
             $password_err = "Mot de passe requis !";
         }
@@ -39,7 +40,7 @@
 
         if(empty($user_err) && empty($password_err)){
             $_SESSION['newUsername'] = $user;
-            $_SESSION['newUserpass'] = $password;
+            $_SESSION['newUserpass'] = $hash;
             $_SESSION['newUservalidity'] = $validity;
             $_SESSION['newUserrole'] = $role;
         }

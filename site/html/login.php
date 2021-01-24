@@ -52,7 +52,8 @@ if($respKeys["success"]) {
                 $login_exist = !empty($result);
 
                 if($login_exist){
-                    if($pass === $result['password']){
+                    //if($pass === $result['password']){
+                    if(password_verify($pass, $result['password'])){
                         if($result['validity'] == 1){
                             $sql = $db->query("SELECT id FROM role WHERE name = 'Administrateur'")->fetch();
                             $admin_id = $sql['id'];
@@ -90,6 +91,8 @@ if($respKeys["success"]) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>STI-mail</title>
+
+    
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <link rel="stylesheet" href="css/bootstrap.css">
