@@ -41,8 +41,8 @@ Changement apporté:
         }
 
         if(!empty($_POST['password'])){
-            $password = htmlentities($_POST['password']);
-            if(!check_mdp_format($password) {
+            $password = $_POST['password'];
+            if(!check_mdp_format($password)) {
                 $password_err = "Erreur: mot de passe faible (8 caracters minimum, majuscules, minuscules, chiffres et caractères spéciaux)!";
             }
             $hash = password_hash($password, PASSWORD_DEFAULT);
