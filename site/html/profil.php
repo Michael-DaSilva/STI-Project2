@@ -4,6 +4,7 @@ Groupe: Michaël da Silva & Guillaume Schranz
 
 Changement apporté:
 - htmlentities contre les attaques XSS
+- Getion des mots de passe forts (checkPass.php)
 -->
 <?php
     session_start();
@@ -33,7 +34,7 @@ Changement apporté:
 }
 if(isset($_SESSION['badPass']) && $_SESSION['badPass'] === true){
 	echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-		  <strong>Erreur: </strong>mot de passe faible (8 caracters minimum, majuscules, minuscules et chiffres)!
+		  <strong>Erreur: </strong>mot de passe faible (8 caracters minimum, majuscules, minuscules, chiffres et caractères spéciaux)!
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		  </button>

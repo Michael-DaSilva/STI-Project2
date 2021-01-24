@@ -17,7 +17,6 @@ include('checkPass.php');
 
 try{
     if(isset($_POST['passChanged']) && !empty($_POST['password'])){
-
         if(!check_mdp_format($_POST['password'])) {
             $_SESSION['badPass'] = true;
 			header('location: profil.php');

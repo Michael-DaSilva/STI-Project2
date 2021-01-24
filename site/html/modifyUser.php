@@ -36,12 +36,12 @@ Changement apporté:
 		$stmt->execute();
 		
 		if(!empty($_POST['password'])){
-			if(!check_mdp_format($_POST['password'])) {
-                $password_err = $password_err = "Erreur: mot de passe faible (8 caracters minimum, majuscules, minuscules et chiffres)!";
+			if(!check_mdp_format($password) {
+                $password_err = $password_err = "Erreur: mot de passe faible (8 caracters minimum, majuscules, minuscules, chiffres et caractères spéciaux)!";
             }
 			if(empty($password_err)){
 				$stmt = $db->prepare("UPDATE account SET password=? WHERE username=?");
-				$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+				$hash = password_hash($password, PASSWORD_DEFAULT);
 				$stmt->bindParam(1, $hash);
 				$stmt->bindParam(2, $_SESSION['user']);
 				$stmt->execute();	
@@ -54,6 +54,7 @@ Changement apporté:
 		if(empty($password_err)){
 			header("location: manageUser.php");
 		}
+		$_SESSION['userModified'] = false;
     }
 
     if(isset($_GET['username'])){
