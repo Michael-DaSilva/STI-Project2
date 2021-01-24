@@ -1,3 +1,10 @@
+<!--
+STI-Project2 2021
+Groupe: Michaël da Silva & Guillaume Schranz
+
+Changement apporté:
+- Prepare statement contre les injections SQL
+-->
 <?php
 session_start();
 if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
@@ -11,9 +18,9 @@ try{
     if(isset($_POST['passChanged']) && !empty($_POST['password'])){
 
         if(!check_mdp_format($_POST['password'])) {
-            echo ("Erreur mot de passe trop faible<br/>");
-            echo ("<a href='profil.php'>retour</a>");
-            die();
+            $_SESSION['badPass'] = true;
+			header('location: profil.php');
+			exit();
         }
 
 		$stmt = $db->prepare('UPDATE account SET password=? WHERE username=?');

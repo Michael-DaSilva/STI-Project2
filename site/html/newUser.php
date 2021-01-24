@@ -1,10 +1,20 @@
+<!--
+STI-Project2 2021
+Groupe: Michaël da Silva & Guillaume Schranz
+
+Changement apporté:
+- Prepare statement contre les injections SQL
+- htmlentities contre les attaques XSS
+- accès restreint à l'admin
+-->
 <?php
     session_start();
     if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
         header('location: login.php');
     }
-    if(!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] === false){
-        header('location: index.php');
+	
+	if(!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] === false){
+		header('location: index.php');
     }
 
     $user = $password = $validity = $role = "";

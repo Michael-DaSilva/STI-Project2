@@ -1,3 +1,10 @@
+<!--
+STI-Project2 2021
+Groupe: Michaël da Silva & Guillaume Schranz
+
+Changement apporté:
+- htmlentities contre les attaques XSS
+-->
 <?php
     session_start();
     if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
@@ -15,9 +22,13 @@
     <input type="submit" name="passChanged" value="Envoyer">
 </form>
 <?php if(isset($_SESSION['passEdited']) && $_SESSION['passEdited'] === true){
-    echo "Nouveau mot de passe appliqué!";
+    echo "Nouveau mot de passe appliqué! <br/>";
     unset($_SESSION['passEdited']);
-} ?>
+} 
+if(isset($_SESSION['badPass']) && $_SESSION['badPass'] === true){
+    echo "Erreur: mot de passe faible (8 caracters minimum, majuscules, minuscules et chiffres)! <br/>";
+    unset($_SESSION['badPass']);
+}?>
 <a href="index.php">Retour aux messages</a>
 
 
