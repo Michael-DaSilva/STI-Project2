@@ -1,3 +1,10 @@
+<!--
+STI-Project2 2021
+Groupe: Michaël da Silva & Guillaume Schranz
+
+Changement apporté:
+- Prepare statement contre les injections SQL
+-->
 <?php
 session_start();
 if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){

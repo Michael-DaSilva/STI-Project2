@@ -1,10 +1,13 @@
+<!--
+STI-Project2 2021
+Groupe: Michaël da Silva & Guillaume Schranz
+
+Changement apporté:
+- Prepare statement contre les injections SQL
+- htmlentities contre les attaques XSS
+- Messages d'erreur qui donnait trop d'informations (mauvais mot de passe et/ou utilisateur)
+-->
 <?php
-// index.php
-// Date de création : 27/09/2020
-// Date de modification : 11/10/20
-// Auteur : Michaël da Silva & Nenad Rajic
-// Fonction : page de login
-// _______________________________
 session_start();
 include("utils.php");
 
