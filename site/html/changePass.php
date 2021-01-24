@@ -5,6 +5,7 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] === false){
 }
 
 include('utils.php');
+include('checkPass.php');
 
 try{
     if(isset($_POST['passChanged']) && !empty($_POST['password'])){
@@ -27,17 +28,5 @@ try{
 }
 
 header('location: profil.php');
-
-function check_mdp_format($mdp)
-{
-	$majuscule = preg_match('@[A-Z]@', $mdp);
-	$minuscule = preg_match('@[a-z]@', $mdp);
-	$chiffre = preg_match('@[0-9]@', $mdp);
-	
-	if(!$majuscule || !$minuscule || !$chiffre || strlen($mdp) < 8)
-		return false;
-	else 
-		return true;
-}
 
 ?>

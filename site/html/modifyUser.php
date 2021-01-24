@@ -11,10 +11,16 @@
     $user = $password = $validity = $role = "";
 
     include("utils.php");
+    include('checkPass.php');
 
     if(isset($_POST['submitModifiedUser'])){
         if(!empty($_POST['password'])){
             $stmt = $db->prepare("UPDATE account SET password=? WHERE username=?");
+            if(!check_mdp_format($_POST['password'])) {
+                echo ("Erreur mot de passe trop faible<br/>");
+                echo ("<a href='profil.php'>retour</a>");
+                die();
+            }
             $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 			$stmt->bindParam(1, $hash);
 			$stmt->bindParam(2, $_SESSION['user']);

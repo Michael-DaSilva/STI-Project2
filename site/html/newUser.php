@@ -11,6 +11,7 @@
     $user_err = $password_err = "";
 
     include("utils.php");
+    include('checkPass.php');
 
     if(isset($_POST['submitNewUser'])){
 		$stmt = $db->prepare("SELECT * FROM account WHERE username=?");
@@ -30,6 +31,11 @@
 
         if(!empty($_POST['password'])){
             $password = htmlentities($_POST['password']);
+            if(!check_mdp_format($_POST['password'])) {
+                echo ("Erreur mot de passe trop faible<br/>");
+                echo ("<a href='profil.php'>retour</a>");
+                die();
+            }
             $hash = password_hash($password, PASSWORD_DEFAULT);
         } else {
             $password_err = "Mot de passe requis !";
