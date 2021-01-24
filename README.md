@@ -19,7 +19,7 @@ Vous pouvez vous connecter avec les utilisateurs suivants:
 
 L'application web est disponible à l'adresse suivante: `http://localhost:8080/`. 
 
-Voici la page principal de l'application web.
+Voici la page principale de l'application web.
 
 ![](rendu/manuel/1.PNG)
 
